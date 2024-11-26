@@ -11,7 +11,7 @@ contact = ReplyKeyboardMarkup(keyboard=[
 
 main = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text='Записаться на услугу')],
-#    [KeyboardButton(text='Контакты/локация')]
+    [KeyboardButton(text='Завершить')]
 ], resize_keyboard=True)
 
 
