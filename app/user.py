@@ -51,7 +51,7 @@ async def reg_contact(message: Message, state: FSMContext):
 @router.message(F.text == 'Записаться на услугу')
 async def get_service(message: Message, state: FSMContext):
     await state.set_state(Reserve.barber)
-    await message.answer('Выберите барбера', reply_markup=await kb.barbers())
+    await message.answer('Выберите мастера', reply_markup=await kb.barbers())
 
 
 @router.callback_query(F.data.startswith('barber_'), Reserve.barber)
