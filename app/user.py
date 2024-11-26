@@ -15,6 +15,8 @@ class Reg(StatesGroup):
     contact = State()
 
 
+
+# здесь можно добавить кнопку выбора рандомного мастера
 class Reserve(StatesGroup):
     barber = State()
     service = State()
@@ -24,7 +26,7 @@ class Reserve(StatesGroup):
 async def cmd_start(message: Message, state: FSMContext):
     user = await set_user(message.from_user.id)
     if user:
-        await message.answer(f'Доброго времени суток, {user.name}!', reply_markup=kb.main)
+        await message.answer(f'Добро пожаловать, {user.name}!', reply_markup=kb.main)
         await state.clear()
     else:
         await message.answer('Добро пожаловать! Пожалуйста пройдите регистрацию.\n\nВведите Ваше имя.')

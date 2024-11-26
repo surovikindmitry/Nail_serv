@@ -3,6 +3,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from app.database.requests import get_barbers, get_services
 
+
 contact = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text='Отправить контакт', request_contact=True)]
 ], resize_keyboard=True, input_field_placeholder='Нажмите кнопку ниже.')
@@ -10,7 +11,7 @@ contact = ReplyKeyboardMarkup(keyboard=[
 
 main = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text='Записаться на услугу')],
-    [KeyboardButton(text='Контакты/локация')]
+#    [KeyboardButton(text='Контакты/локация')]
 ], resize_keyboard=True)
 
 
