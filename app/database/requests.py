@@ -1,5 +1,5 @@
 from app.database.models import async_session
-from app.database.models import User, Barber, Service, Reserve
+from app.database.models import User, Manicurist, Service, Reserve, Hour, Day
 from sqlalchemy import select, update
 
 
@@ -29,8 +29,8 @@ async def update_user(session, tg_id, name, contact):
 
 
 @connection
-async def get_barbers(session):
-    return await session.scalars(select(Barber))
+async def get_manicurists(session):
+    return await session.scalars(select(Manicurist))
 
 
 @connection
@@ -39,7 +39,17 @@ async def get_services(session):
 
 
 @connection
-async def set_reserve(session, tg_id, barber, service):
+async def get_days(session):
+    return await session.scalars(select(Day))
+
+@connection
+async def get_hours(session):
+    return await session.scalars(select(Hour))
+
+
+
+@connection
+async def set_reserve(session, tg_id, manicurist, service, day, hour):
     user = await session.scalar(select(User).where(User.tg_id == tg_id))
-    session.add(Reserve(user=user.id, service=service, barber=barber))
+    session.add(Reserve(user=user.id, service=service, manicurist=manicurist, day=day, hour=hour))
     await session.commit()

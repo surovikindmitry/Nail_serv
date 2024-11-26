@@ -20,8 +20,8 @@ class User(Base):
     phone_number: Mapped[str] = mapped_column(String(20), nullable=True)
 
 
-class Barber(Base):
-    __tablename__ = 'barbers'
+class Manicurist(Base):
+    __tablename__ = 'manicurists'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(20))
@@ -32,8 +32,19 @@ class Service(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(20))
-    description: Mapped[str] = mapped_column(String(128))
     price: Mapped[int]
+
+class Day(Base):
+    __tablename__ = 'days'
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(20))
+
+class Hour(Base):
+    __tablename__ = 'hours'
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    name: Mapped[int]
 
 
 class Reserve(Base):
@@ -41,8 +52,10 @@ class Reserve(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     user: Mapped[int] = mapped_column(ForeignKey('users.id'))
-    barber: Mapped[int] = mapped_column(ForeignKey('barbers.id'))
+    manicurist: Mapped[int] = mapped_column(ForeignKey('manicurists.id'))
     service: Mapped[int] = mapped_column(ForeignKey('services.id'))
+    day: Mapped[int] = mapped_column(ForeignKey('days.id'))
+    hour: Mapped[int] = mapped_column(ForeignKey('hours.id'))
 
 
 async def async_main():
