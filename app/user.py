@@ -18,7 +18,7 @@ class Reg(StatesGroup):
 
 # здесь можно добавить кнопку выбора рандомного мастера
 class Reserve(StatesGroup):
-    barber = State()
+    manicurist = State()
     service = State()
 
 
@@ -50,14 +50,14 @@ async def reg_contact(message: Message, state: FSMContext):
 
 @router.message(F.text == 'Записаться на услугу')
 async def get_service(message: Message, state: FSMContext):
-    await state.set_state(Reserve.barber)
-    await message.answer('Выберите мастера', reply_markup=await kb.barbers())
+    await state.set_state(Reserve.manicurist)
+    await message.answer('Выберите мастера', reply_markup=await kb.manicurists())
 
 
-@router.callback_query(F.data.startswith('barber_'), Reserve.barber)
+@router.callback_query(F.data.startswith('manicurist_'), Reserve.manicurist)
 async def get_service_2(callback: CallbackQuery, state: FSMContext):
     await callback.answer('Мастер выбран.')
-    await state.update_data(barber=callback.data.split('_')[1])
+    await state.update_data(manicurist=callback.data.split('_')[1])
     await state.set_state(Reserve.service)
     await callback.message.answer('Выберите услугу', reply_markup=await kb.services())
 
@@ -66,5 +66,5 @@ async def get_service_2(callback: CallbackQuery, state: FSMContext):
 async def get_service_2(callback: CallbackQuery, state: FSMContext):
     await callback.answer('Услуга выбрана.')
     data = await state.get_data()
-    await set_reserve(callback.from_user.id, data['barber'], callback.data.split('_')[1])
+    await set_reserve(callback.from_user.id, data['manicurist'], callback.data.split('_')[1])
     await callback.message.answer('Вы успешно записаны. Менеджер перезвонит вам в рабочее время.', reply_markup=kb.main)

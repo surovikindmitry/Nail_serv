@@ -32,7 +32,7 @@ class Service(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(20))
-    price: Mapped[int]
+
 
 class Day(Base):
     __tablename__ = 'days'
