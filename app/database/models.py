@@ -4,9 +4,10 @@ from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_
 
 engine = create_async_engine(url='sqlite+aiosqlite:///db.sqlite3')
 
+#Запуск создания БД
 async_session = async_sessionmaker(engine, class_=AsyncSession)
 
-
+#       через этот класс происходит управление всеми моделями
 class Base(AsyncAttrs, DeclarativeBase):
     pass
 

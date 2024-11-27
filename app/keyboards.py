@@ -10,10 +10,10 @@ contact = ReplyKeyboardMarkup(keyboard=[
 
 main = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text='Записаться на услугу')],
-    [KeyboardButton(text='Завершить')]
+#    [KeyboardButton(text='Завершить')]
 ], resize_keyboard=True)
 
-
+#считывание из базы всей информации
 async def manicurists():
     all_manicurists = await get_manicurists()
     keyboard = InlineKeyboardBuilder()

@@ -2,7 +2,7 @@ from app.database.models import async_session
 from app.database.models import User, Manicurist, Service, Reserve, Hour, Day
 from sqlalchemy import select, update
 
-
+#функция соединения с БД, создает обертку, в которой аргументы. Потом возвращает их
 def connection(func):
     async def wrapper(*args, **kwargs):
         async with async_session() as session:

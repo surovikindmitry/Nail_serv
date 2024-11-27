@@ -1,6 +1,7 @@
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import CommandStart
+#Предназначено для сброса состояний
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 
@@ -16,10 +17,13 @@ class Reg(StatesGroup):
 
 
 
-# здесь можно добавить кнопку выбора рандомного мастера
+
 class Reserve(StatesGroup):
     manicurist = State()
     service = State()
+#добавил сам
+    day = State()
+    hour = State()
 
 
 @router.message(CommandStart())
@@ -47,7 +51,7 @@ async def reg_contact(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(f'Выберите услугу ниже.', reply_markup=kb.main)
 
-
+#Ловит клавишу из основной клавиатуры и реагирует на нее
 @router.message(F.text == 'Записаться на услугу')
 async def get_service(message: Message, state: FSMContext):
     await state.set_state(Reserve.manicurist)
@@ -66,5 +70,5 @@ async def get_service_2(callback: CallbackQuery, state: FSMContext):
 async def get_service_2(callback: CallbackQuery, state: FSMContext):
     await callback.answer('Услуга выбрана.')
     data = await state.get_data()
-    await set_reserve(callback.from_user.id, data['manicurist'], callback.data.split('_')[1])
+    await set_reserve(callback.from_user.id, data['services'], callback.data.split('_')[1])
     await callback.message.answer('Вы успешно записаны. Менеджер перезвонит вам в рабочее время.', reply_markup=kb.main)
