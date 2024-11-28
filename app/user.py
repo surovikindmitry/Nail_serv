@@ -35,7 +35,7 @@ async def cmd_start(message: Message, state: FSMContext):
 async def reg_name(message: Message, state: FSMContext):
     await state.update_data(name=message.text)
     await state.set_state(Reg.contact)
-    await message.answer('Отправьте номер телефона', reply_markup=kb.contact)
+    await message.answer('Отправьте свои контактные данные', reply_markup=kb.contact)
 
 
 @router.message(Reg.contact, F.contact)
@@ -65,10 +65,10 @@ async def get_service_2(callback: CallbackQuery, state: FSMContext):
     await callback.answer('Услуга выбрана.')
     data = await state.get_data()
     await set_reserve(callback.from_user.id, data['barber'], callback.data.split('_')[1])
-    await callback.message.answer('Вы успешно записаны. Менеджер перезвонит вам в рабочее время.', reply_markup=kb.main)
+    await callback.message.answer('Вы успешно записаны. Менеджер перезвонит Вам в рабочее время.', reply_markup=kb.main)
 
 
-#добавил функцию перезагрузки при нажатии кнопки завершить
+
 @router.message(F.text == 'Завершить')
 async def cmd_stop(message: Message, state: FSMContext):
     user = await set_user(message.from_user.id)
