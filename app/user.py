@@ -1,7 +1,6 @@
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import CommandStart
-#Предназначено для сброса состояний
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 
@@ -16,21 +15,16 @@ class Reg(StatesGroup):
     contact = State()
 
 
-
-
 class Reserve(StatesGroup):
-    manicurist = State()
+    barber = State()
     service = State()
-#добавил сам
-    day = State()
-    hour = State()
 
 
 @router.message(CommandStart())
 async def cmd_start(message: Message, state: FSMContext):
     user = await set_user(message.from_user.id)
     if user:
-        await message.answer(f'Добро пожаловать, {user.name}!', reply_markup=kb.main)
+        await message.answer(f'Доброго времени суток, {user.name}!', reply_markup=kb.main)
         await state.clear()
     else:
         await message.answer('Добро пожаловать! Пожалуйста пройдите регистрацию.\n\nВведите Ваше имя.')
@@ -49,19 +43,19 @@ async def reg_contact(message: Message, state: FSMContext):
     data = await state.get_data()
     await update_user(message.from_user.id, data['name'], message.contact.phone_number)
     await state.clear()
-    await message.answer(f'Выберите услугу ниже.', reply_markup=kb.main)
+    await message.answer(f'Воспользуйтесь меню для продолжения.', reply_markup=kb.main)
 
-#Ловит клавишу из основной клавиатуры и реагирует на нее
+
 @router.message(F.text == 'Записаться на услугу')
 async def get_service(message: Message, state: FSMContext):
-    await state.set_state(Reserve.manicurist)
-    await message.answer('Выберите мастера', reply_markup=await kb.manicurists())
+    await state.set_state(Reserve.barber)
+    await message.answer('Выберите мастера', reply_markup=await kb.barbers())
 
 
-@router.callback_query(F.data.startswith('manicurist_'), Reserve.manicurist)
+@router.callback_query(F.data.startswith('barber_'), Reserve.barber)
 async def get_service_2(callback: CallbackQuery, state: FSMContext):
     await callback.answer('Мастер выбран.')
-    await state.update_data(manicurist=callback.data.split('_')[1])
+    await state.update_data(barber=callback.data.split('_')[1])
     await state.set_state(Reserve.service)
     await callback.message.answer('Выберите услугу', reply_markup=await kb.services())
 
@@ -70,5 +64,19 @@ async def get_service_2(callback: CallbackQuery, state: FSMContext):
 async def get_service_2(callback: CallbackQuery, state: FSMContext):
     await callback.answer('Услуга выбрана.')
     data = await state.get_data()
-    await set_reserve(callback.from_user.id, data['services'], callback.data.split('_')[1])
+    await set_reserve(callback.from_user.id, data['barber'], callback.data.split('_')[1])
     await callback.message.answer('Вы успешно записаны. Менеджер перезвонит вам в рабочее время.', reply_markup=kb.main)
+
+
+#добавил функцию перезагрузки при нажатии кнопки завершить
+@router.message(F.text == 'Завершить')
+async def cmd_stop(message: Message, state: FSMContext):
+    user = await set_user(message.from_user.id)
+#    if user:
+    await message.answer(f'До свидания, {user.name}!', reply_markup=kb.main)
+    await state.clear()
+    # else:
+    #     await message.answer('Добро пожаловать! Пожалуйста пройдите регистрацию.\n\nВведите Ваше имя.')
+    #     await state.set_state(Reg.name)
+
+

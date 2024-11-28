@@ -4,10 +4,9 @@ from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_
 
 engine = create_async_engine(url='sqlite+aiosqlite:///db.sqlite3')
 
-#Запуск создания БД
 async_session = async_sessionmaker(engine, class_=AsyncSession)
 
-#       через этот класс происходит управление всеми моделями
+
 class Base(AsyncAttrs, DeclarativeBase):
     pass
 
@@ -21,8 +20,8 @@ class User(Base):
     phone_number: Mapped[str] = mapped_column(String(20), nullable=True)
 
 
-class Manicurist(Base):
-    __tablename__ = 'manicurists'
+class Barber(Base):
+    __tablename__ = 'barbers'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(20))
@@ -35,28 +34,13 @@ class Service(Base):
     name: Mapped[str] = mapped_column(String(20))
 
 
-class Day(Base):
-    __tablename__ = 'days'
-
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String(20))
-
-class Hour(Base):
-    __tablename__ = 'hours'
-
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    name: Mapped[int]
-
-
 class Reserve(Base):
     __tablename__ = 'reservations'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     user: Mapped[int] = mapped_column(ForeignKey('users.id'))
-    manicurist: Mapped[int] = mapped_column(ForeignKey('manicurists.id'))
+    barber: Mapped[int] = mapped_column(ForeignKey('barbers.id'))
     service: Mapped[int] = mapped_column(ForeignKey('services.id'))
-    day: Mapped[int] = mapped_column(ForeignKey('days.id'))
-    hour: Mapped[int] = mapped_column(ForeignKey('hours.id'))
 
 
 async def async_main():

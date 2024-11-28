@@ -1,8 +1,8 @@
 from app.database.models import async_session
-from app.database.models import User, Manicurist, Service, Reserve, Hour, Day
+from app.database.models import User, Barber, Service, Reserve
 from sqlalchemy import select, update
 
-#функция соединения с БД, создает обертку, в которой аргументы. Потом возвращает их
+
 def connection(func):
     async def wrapper(*args, **kwargs):
         async with async_session() as session:
@@ -29,8 +29,8 @@ async def update_user(session, tg_id, name, contact):
 
 
 @connection
-async def get_manicurists(session):
-    return await session.scalars(select(Manicurist))
+async def get_barbers(session):
+    return await session.scalars(select(Barber))
 
 
 @connection
@@ -39,17 +39,7 @@ async def get_services(session):
 
 
 @connection
-async def get_days(session):
-    return await session.scalars(select(Day))
-
-@connection
-async def get_hours(session):
-    return await session.scalars(select(Hour))
-
-
-
-@connection
-async def set_reserve(session, tg_id, manicurist, service, day, hour):
+async def set_reserve(session, tg_id, barber, service):
     user = await session.scalar(select(User).where(User.tg_id == tg_id))
-    session.add(Reserve(user=user.id, service=service, manicurist=manicurist, day=day, hour=hour))
+    session.add(Reserve(user=user.id, service=service, barber=barber))
     await session.commit()
