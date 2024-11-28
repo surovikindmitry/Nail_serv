@@ -72,11 +72,7 @@ async def get_service_2(callback: CallbackQuery, state: FSMContext):
 @router.message(F.text == 'Завершить')
 async def cmd_stop(message: Message, state: FSMContext):
     user = await set_user(message.from_user.id)
-#    if user:
     await message.answer(f'До свидания, {user.name}!', reply_markup=kb.main)
     await state.clear()
-    # else:
-    #     await message.answer('Добро пожаловать! Пожалуйста пройдите регистрацию.\n\nВведите Ваше имя.')
-    #     await state.set_state(Reg.name)
 
 
