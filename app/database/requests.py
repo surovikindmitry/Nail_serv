@@ -46,6 +46,8 @@ async def get_hours(session):
     return await session.scalars(select(Hour))
 
 
+#необходимо доработать
+
 @connection
 async def set_reserve(session, tg_id, barber, service, day, hour):
     user = await session.scalar(select(User).where(User.tg_id == tg_id))

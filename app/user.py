@@ -86,7 +86,7 @@ async def get_service_4(callback: CallbackQuery, state: FSMContext):
 async def get_service_5(callback: CallbackQuery, state: FSMContext):
     await callback.answer('Время выбрано.')
     await state.update_data(hour=callback.data.split('_')[1])
-    data = await state.get_data()
+    data = await state.get_data()  #как то переработать данную функцию
     await state.clear()
     await callback.message.answer('Услуги выбраны. Пожалуйста, нажмите кнопку "Записаться" для передачи информации менеджеру и завершения записи.', reply_markup=kb.main)
 
@@ -104,4 +104,15 @@ async def cmd_stop(message: Message, bot: Bot, state: FSMContext): #параме
 
 
 
+
+    # # Получаем все данные из состояния
+    # data = await state.get_data()
+    #
+    # # Передаем данные в функцию для записи в базу данных
+    # await set_reserve(
+    #     user_id=callback.from_user.id,  # предполагаем, что вы сохраняете user_id
+    #     barber=data['barber'],
+    #     service=data['service'],
+    #     day=data['day'],
+    #     hour=data['hour']
 
