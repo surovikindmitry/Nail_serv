@@ -20,17 +20,30 @@ class User(Base):
     name: Mapped[str] = mapped_column(String(20), nullable=True)
     phone_number: Mapped[str] = mapped_column(String(20), nullable=True)
 
+
 class Barber(Base):
     __tablename__ = 'barbers'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(20))
 
+
 class Service(Base):
     __tablename__ = 'services'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(20))
+
+class Day(Base):
+    __tablename__ = 'days'
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(20))
+
+class Hour(Base):
+    __tablename__ = 'hours'
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(20))
+
 
 class Reserve(Base):
     __tablename__ = 'reservations'
@@ -39,6 +52,10 @@ class Reserve(Base):
     user: Mapped[int] = mapped_column(ForeignKey('users.id'))
     barber: Mapped[int] = mapped_column(ForeignKey('barbers.id'))
     service: Mapped[int] = mapped_column(ForeignKey('services.id'))
+    day: Mapped[int] = mapped_column(ForeignKey('days.id'))
+    hour: Mapped[int] = mapped_column(ForeignKey('hours.id'))
+
+
 
 async def async_main():
     async with engine.begin() as conn:
