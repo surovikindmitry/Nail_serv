@@ -86,6 +86,7 @@ async def get_service_4(callback: CallbackQuery, state: FSMContext):
 async def get_service_5(callback: CallbackQuery, state: FSMContext):
     await callback.answer('Время выбрано.')
     await state.update_data(hour=callback.data.split('_')[1])
+    data = await state.get_data()
     await state.clear()
     await callback.message.answer('Услуги выбраны. Пожалуйста, нажмите кнопку "Записаться" для передачи информации менеджеру и завершения записи.', reply_markup=kb.main)
 
