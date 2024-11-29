@@ -1,13 +1,17 @@
-from aiogram import Router, F
+from aiogram import Router, F, Bot
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import CommandStart
+#from aiogram.methods import SendMessage
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 
+from config.bot_config import API_TOKEN
 from app.database.requests import set_user, update_user, set_reserve
 import app.keyboards as kb
 
 router = Router()
+
+bot = Bot(token=API_TOKEN)
 
 
 class Reg(StatesGroup):
@@ -46,7 +50,7 @@ async def reg_contact(message: Message, state: FSMContext):
     await message.answer(f'Воспользуйтесь меню для продолжения.', reply_markup=kb.main)
 
 
-@router.message(F.text == 'Записаться на услугу')
+@router.message(F.text == 'Выбрать услугу')
 async def get_service(message: Message, state: FSMContext):
     await state.set_state(Reserve.barber)
     await message.answer('Выберите мастера', reply_markup=await kb.barbers())
@@ -65,14 +69,25 @@ async def get_service_2(callback: CallbackQuery, state: FSMContext):
     await callback.answer('Услуга выбрана.')
     data = await state.get_data()
     await set_reserve(callback.from_user.id, data['barber'], callback.data.split('_')[1])
-    await callback.message.answer('Вы успешно записаны. Менеджер перезвонит Вам в рабочее время.', reply_markup=kb.main)
+    await callback.message.answer('Услуги выбраны. Пожалуйста, нажмите кнопку "Записаться" для передачи информации менеджеру и завершения записи.', reply_markup=kb.main)
 
 
-
-@router.message(F.text == 'Завершить')
-async def cmd_stop(message: Message, state: FSMContext):
+@router.message(F.text == 'Записаться')
+async def cmd_stop(message: Message, bot: Bot, state: FSMContext):
+    try:
+        await bot.send_message(1428983640, 'У вас новая запись')
+    except Exception as e:
+        print(f"Ошибка при отправке сообщения: {e}")
     user = await set_user(message.from_user.id)
-    await message.answer(f'До свидания, {user.name}!', reply_markup=kb.main)
+    await message.answer(f'До свидания, {user.name}! Благодарим Вас за обращение в наш салон, менеджер свяжется с Вами в ближайшее время!', reply_markup=kb.main)
     await state.clear()
 
 
+
+
+
+# async def cmd_stop(message: Message, state: FSMContext):
+#     user = await set_user(message.from_user.id)
+#     await message.answer(f'До свидания, {user.name}!', reply_markup=kb.main)
+#     await state.clear()
+# 1428983640
