@@ -39,7 +39,7 @@ async def cmd_start(message: Message, state: FSMContext):
 async def reg_name(message: Message, state: FSMContext):
     await state.update_data(name=message.text)
     await state.set_state(Reg.contact)
-    await message.answer('Отправьте свои контактные данные', reply_markup=kb.contact)
+    await message.answer('Отправьте свои контактные данные в формате контакта', reply_markup=kb.contact)
 
 
 @router.message(Reg.contact, F.contact)
