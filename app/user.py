@@ -86,8 +86,3 @@ async def cmd_stop(message: Message, bot: Bot, state: FSMContext):
 
 
 
-# async def cmd_stop(message: Message, state: FSMContext):
-#     user = await set_user(message.from_user.id)
-#     await message.answer(f'До свидания, {user.name}!', reply_markup=kb.main)
-#     await state.clear()
-# 1428983640
