@@ -1,10 +1,6 @@
 from app.database.models import async_session
 from app.database.models import User, Barber, Service, Day, Hour, Reserve
 from sqlalchemy import select, update
-from sqlalchemy.orm import joinedload
-
-
-
 
 
 def connection(func):
@@ -56,30 +52,4 @@ async def set_reserve(session, tg_id, barber, service, day, hour):
     session.add(Reserve(user=user.id, service=service, barber=barber, day=day, hour=hour))
     await session.commit()
 
-@connection
-async def get_reservations(session):
-    # Выполняем запрос с объединением (join) между таблицами
-    query = select(Reserve).options(
-        joinedload(Reserve.user),
-        joinedload(Reserve.service),
-        joinedload(Reserve.barber),
-        joinedload(Reserve.day),
-        joinedload(Reserve.hour)
-    )
 
-    reservations = await session.execute(query)
-    results = reservations.scalars().all()
-
-    # Формируем список с необходимыми данными
-    reservations_list = []
-    for reservation in results:
-        reservations_list.append({
-            'name': reservation.user.name,
-            'phone': reservation.user.phone_number,
-            'barber_name': reservation.barber.name,
-            'service_name': reservation.service.name,
-            'day_name': reservation.day.name,
-            'hour_name': reservation.hour.name
-        })
-
-    return reservations_list
