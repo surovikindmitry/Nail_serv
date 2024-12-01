@@ -83,3 +83,4 @@ async def get_reservations(session):
         })
 
     return reservations_list
+

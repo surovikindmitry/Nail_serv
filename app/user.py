@@ -4,8 +4,9 @@ from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from config.bot_config import API_TOKEN, ADMIN_ID
-from app.database.requests import set_user, update_user, set_reserve
+from app.database.requests import set_user, update_user, set_reserve, get_reservations
 import app.keyboards as kb
+
 
 router = Router()
 
