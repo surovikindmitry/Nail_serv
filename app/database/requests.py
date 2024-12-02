@@ -1,7 +1,6 @@
 from app.database.models import async_session
 from app.database.models import User, Barber, Service, Day, Hour, Reserve
 from sqlalchemy import select, update
-from sqlalchemy.orm import joinedload
 
 
 
