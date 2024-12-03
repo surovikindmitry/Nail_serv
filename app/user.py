@@ -3,8 +3,11 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
+from pyexpat.errors import messages
+
 from config.bot_config import API_TOKEN, ADMIN_ID
 from app.database.requests import set_user, update_user, set_reserve
+from app.database.models import get_data
 import app.keyboards as kb
 
 
@@ -96,7 +99,9 @@ async def get_service_5(callback: CallbackQuery, state: FSMContext):
 @router.message(F.text == 'Записаться')
 async def cmd_stop(message: Message, bot: Bot, state: FSMContext):
     try:
-        await bot.send_message(chat_id, 'У вас новая запись')
+        data_to_send = await get_data()
+        formatted_data = '\n'.join([f'{item[0]} - {item[1]}, {item[2]}, {item[3]}, {item[4]}, {item[5]}' for item in data_to_send])
+        await bot.send_message(chat_id, formatted_data)
     except Exception as e:
         print(f"Ошибка при отправке сообщения: {e}")
     user = await set_user(message.from_user.id)
@@ -104,7 +109,15 @@ async def cmd_stop(message: Message, bot: Bot, state: FSMContext):
     await state.clear()
 
 
-
+# @router.message(F.text == 'Записаться')
+# async def cmd_stop(message: Message, bot: Bot, state: FSMContext):
+#     try:
+#         await bot.send_message(chat_id, 'У вас новая запись')
+#     except Exception as e:
+#         print(f"Ошибка при отправке сообщения: {e}")
+#     user = await set_user(message.from_user.id)
+#     await message.answer(f'До свидания, {user.name}! Благодарим за обращение в наш салон, менеджер свяжется с Вами в ближайшее время!', reply_markup=kb.main)
+#     await state.clear()
 
 
 
