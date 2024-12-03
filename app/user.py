@@ -4,7 +4,7 @@ from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from config.bot_config import API_TOKEN, ADMIN_ID
-from app.database.requests import set_user, update_user, set_reserve, get_reservations
+from app.database.requests import set_user, update_user, set_reserve
 import app.keyboards as kb
 
 
@@ -94,7 +94,7 @@ async def get_service_5(callback: CallbackQuery, state: FSMContext):
 
 
 @router.message(F.text == 'Записаться')
-async def cmd_stop(message: Message, bot: Bot, state: FSMContext): #параметр bot мешается, может убрать
+async def cmd_stop(message: Message, bot: Bot, state: FSMContext):
     try:
         await bot.send_message(chat_id, 'У вас новая запись')
     except Exception as e:
