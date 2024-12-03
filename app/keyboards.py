@@ -8,8 +8,8 @@ contact = ReplyKeyboardMarkup(keyboard=[
 
 
 main = ReplyKeyboardMarkup(keyboard=[
-    [KeyboardButton(text='Приступим')],
-    [KeyboardButton(text='Записаться')]
+    [KeyboardButton(text='Приступим к записи')],
+    [KeyboardButton(text='Завершить запись')]
 ], resize_keyboard=True)
 
 

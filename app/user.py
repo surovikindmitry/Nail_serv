@@ -56,7 +56,7 @@ async def reg_contact(message: Message, state: FSMContext):
 
 
 #выбор мастера
-@router.message(F.text == 'Приступим')
+@router.message(F.text == 'Приступим к записи')
 async def get_service(message: Message, state: FSMContext):
     await state.set_state(Reserve.barber)
     await message.answer('Выберите мастера', reply_markup=await kb.barbers())
@@ -96,7 +96,7 @@ async def get_service_5(callback: CallbackQuery, state: FSMContext):
     await callback.message.answer('Услуги выбраны. Пожалуйста, нажмите кнопку "Записаться" для передачи информации менеджеру и завершения записи.', reply_markup=kb.main)
 
 
-@router.message(F.text == 'Записаться')
+@router.message(F.text == 'Завершить запись')
 async def cmd_stop(message: Message, bot: Bot, state: FSMContext):
     try:
         data_to_send = await get_data()
