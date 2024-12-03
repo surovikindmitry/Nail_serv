@@ -3,7 +3,7 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
-from pyexpat.errors import messages
+
 
 from config.bot_config import API_TOKEN, ADMIN_ID
 from app.database.requests import set_user, update_user, set_reserve
@@ -92,8 +92,7 @@ async def get_service_5(callback: CallbackQuery, state: FSMContext):
     await state.update_data(hour=callback.data.split('_')[1])
     data = await state.get_data()
     await set_reserve(callback.from_user.id, data['barber'], data['day'], data['hour'], callback.data.split('_')[1])
-#    await state.clear()
-    await callback.message.answer('Услуги выбраны. Пожалуйста, нажмите кнопку "Записаться" для передачи информации менеджеру и завершения записи.', reply_markup=kb.main)
+    await callback.message.answer('Услуги выбраны. Пожалуйста, нажмите кнопку "Завершить запись" для передачи информации менеджеру и завершения записи.', reply_markup=kb.main)
 
 
 @router.message(F.text == 'Завершить запись')

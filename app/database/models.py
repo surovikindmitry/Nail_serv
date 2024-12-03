@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, String, BigInteger, select, join
+from sqlalchemy import ForeignKey, String, BigInteger, select, join, desc
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
 from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_engine, AsyncSession
 
@@ -79,7 +79,10 @@ stmt = (
     .join(Service, Reserve.service == Service.id)
     .join(Day, Reserve.day == Day.id)
     .join(Hour, Reserve.hour == Hour.id)
+    .order_by(desc(Reserve.id))
+    .limit(1)
 )
+
 
 async def get_data():
     async with async_session() as session:
